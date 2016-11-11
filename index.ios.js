@@ -6,48 +6,57 @@
 
 import React, { Component } from 'react';
 import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
+    AppRegistry,
+    StyleSheet,
+    Text,
+    View,
+    NativeModules
 } from 'react-native';
 
-export default class GestureUnlockDemo extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
-    );
-  }
-}
+import { GestureView } from 'react-native-gestureunlock';
 
+export default class GestureUnlockDemo extends Component {
+    constructor() {
+        super()
+        this.state = {
+            passcodeContent: 'content as a test for call from component'
+        }
+    }
+
+    render() {
+        var gestureViewSettings = (<GestureView style={styles.gesture}
+                                                nodeScale={74} colCount={3}
+                                                backgroundImgName="Home_refresh_bg" onGestureComplete={
+                                                (result)=>this.setState({
+                                                passcodeContent: result? result : 'The return value not found'
+                                                })} nodeThemes={{nodeNormal: 'gesture_node_normal'
+                                                                }}/>)
+                return (
+                    <View style={styles.container}>
+                        {gestureViewSettings}
+                        <Text style={styles.passcode}>
+                            {this.state.passcodeContent}
+                        </Text>
+                    </View>
+                );
+    }
+}
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: 'white',
+    },
+    gesture: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    passcode: {
+        fontSize: 16,
+        textAlign: 'center',
+        margin: 10,
+        color: 'black'
+    },
 });
 
 AppRegistry.registerComponent('GestureUnlockDemo', () => GestureUnlockDemo);

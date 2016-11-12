@@ -26,7 +26,7 @@ export default class GestureUnlockDemo extends Component {
     render() {
         var gestureViewSettings = (<GestureView style={styles.gesture}
                                                 nodeScale={74} colCount={3}
-                                                backgroundImgName="Home_refresh_bg" onGestureComplete={
+                                                backgroundImgName="Home_refresh_bg" lineWidth={5} onGestureComplete={
                                                 (result)=>this.setState({
                                                 passcodeContent: result? result : 'The return value not found'
                                                 })} nodeThemes={{nodeNormal: 'gesture_node_normal'

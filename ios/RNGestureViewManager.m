@@ -26,6 +26,8 @@ RCT_EXPORT_VIEW_PROPERTY(onComplete, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(nodeScale, CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(colCount, int)
 RCT_EXPORT_VIEW_PROPERTY(backgroundImgName, NSString)
+RCT_EXPORT_VIEW_PROPERTY(lineColor, UIColor)
+RCT_EXPORT_VIEW_PROPERTY(lineWidth, CGFloat)
 RCT_EXPORT_METHOD(setupNodeUI:(NSDictionary *)params) {
   NSString *nodeNormalImg = params[@"nodeNormal"];
   NSString *nodeErrorImg = params[@"nodeError"];

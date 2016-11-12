@@ -12,6 +12,7 @@
 #define kButtonCount 9
 const CGFloat kNodeScale = 74.f;
 const int kColCount = 3;
+const CGFloat kLineWidth = 10.f;
 
 @interface RNGestureView ()
 
@@ -26,9 +27,7 @@ const int kColCount = 3;
 
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
-    _nodeSelectedImgName = @"gesture_node_highlighted";
-    _nodeErrorImgName = @"gesture_node_error";
-    _nodeNormalImgName = @"gesture_node_normal";
+    [self commonSetup];
   }
   return self;
 }
@@ -73,6 +72,23 @@ const int kColCount = 3;
      _nodeNormalImgName = nodeNormalImgName ? nodeNormalImgName : @"gesture_node_normal";
 }
 
+- (void)setLineColor:(UIColor *)lineColor {
+  if (lineColor) {
+    _lineColor = lineColor;
+  } else {
+    _lineColor = [UIColor whiteColor];
+  }
+}
+
+- (void)setLineWidth:(CGFloat)lineWidth {
+  if (lineWidth > 0) {
+    _lineWidth = lineWidth;
+  } else {
+    _lineWidth = kLineWidth;
+  }
+}
+
+#pragma mark - life cycle
 - (void)touchesBegan:(NSSet<UITouch*>*)touches withEvent:(UIEvent*)event
 {
   
@@ -139,17 +155,6 @@ const int kColCount = 3;
   });
 }
 
-- (void)clear {
-  for (int i = 0; i < self.btns.count; ++i) {
-    UIButton* btn = self.btns[i];
-    btn.selected = NO;
-    btn.enabled = YES;
-  }
-  
-  [self.lineBtns removeAllObjects];
-  [self setNeedsDisplay];
-}
-
 - (void)drawRect:(CGRect)rect
 {
   
@@ -169,9 +174,10 @@ const int kColCount = 3;
     }
   }
   [path addLineToPoint:self.currentPoint];
-  [[UIColor whiteColor] set];
-  
-  [path setLineWidth:10];
+
+  [_lineColor set];
+
+  [path setLineWidth:_lineWidth];
   [path setLineJoinStyle:kCGLineJoinRound];
   [path setLineCapStyle:kCGLineCapRound];
   [path stroke];
@@ -181,9 +187,9 @@ const int kColCount = 3;
 {
   [super layoutSubviews];
 
-  CGFloat w = _nodeScale == 0 ? kNodeScale : _nodeScale;
+  CGFloat w = _nodeScale;
   CGFloat h = w;
-  int colCount = _colCount == 0 ? kColCount : _colCount;
+  int colCount = _colCount;
   CGFloat marginX = (self.frame.size.width - colCount * w) / (colCount + 1);
   CGFloat marginY = (self.frame.size.height - colCount * h) / (colCount + 1);
   for (int i = 0; i < self.btns.count; i++) {
@@ -192,6 +198,29 @@ const int kColCount = 3;
     [self.btns[i] setFrame:CGRectMake(x, y, w, h)];
   }
   self.backgroundColor = [UIColor colorWithPatternImage:[CXImageLoader loadImage:_backgroundImgName]];
+}
+
+#pragma mark - private methods
+- (void)commonSetup {
+  _nodeScale = kNodeScale;
+  _colCount = kColCount;
+  _nodeSelectedImgName = @"gesture_node_highlighted";
+  _nodeErrorImgName = @"gesture_node_error";
+  _nodeNormalImgName = @"gesture_node_normal";
+  _backgroundImgName = @"Home_refresh_bg";
+  _lineWidth = kLineWidth;
+  _lineColor = [UIColor whiteColor];
+}
+
+- (void)clear {
+  for (int i = 0; i < self.btns.count; ++i) {
+    UIButton* btn = self.btns[i];
+    btn.selected = NO;
+    btn.enabled = YES;
+  }
+  
+  [self.lineBtns removeAllObjects];
+  [self setNeedsDisplay];
 }
 
 @end
